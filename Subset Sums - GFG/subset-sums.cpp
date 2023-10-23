@@ -6,24 +6,24 @@ using namespace std;
 class Solution
 {
 public:
-void PrintSubSum(int index,vector<int>&arr,vector<int>&ds,int N,int sum)
+void recursive(vector<int>&arr,int n,vector<int>&ans,int sum,int index=0)
 {
-    if(index==N)
+    if(index>=n)
     {
-        ds.push_back(sum);
+        ans.push_back(sum);
         return;
     }
-    
-    PrintSubSum(index+1,arr,ds,N,sum+arr[index]);
-    
-    PrintSubSum(index+1,arr,ds,N,sum);
+    sum+=arr[index];
+  recursive(arr,n,ans,sum,index+1); //encluding call
+  sum-=arr[index];
+  recursive(arr,n,ans,sum,index+1);
 }
     vector<int> subsetSums(vector<int> arr, int N)
     {
-        vector<int>ds;
-        PrintSubSum(0,arr,ds,N,0);
-        sort(ds.begin(),ds.end());
-        return ds;
+        vector<int>ans;
+        int sum=0;
+        recursive(arr,N,ans,sum);
+        return ans;
     }
 };
 
