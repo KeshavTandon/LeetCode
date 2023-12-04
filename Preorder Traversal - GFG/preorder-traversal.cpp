@@ -132,8 +132,8 @@ struct Node
 vector <int> preorder(Node* root)
 {
    vector<int>ans;
-   if(root==NULL) return ans;
    stack<Node*>st;
+   if(root==NULL) return ans;
    st.push(root);
    while(!st.empty())
    {
