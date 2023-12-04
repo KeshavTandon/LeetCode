@@ -108,8 +108,8 @@ int dfs(Node* root)
     if(root==NULL) return 0;
     int lft=dfs(root->left);
     int rght=dfs(root->right);
-    if(lft==-1 || rght==-1) return -1;
     if(abs(lft-rght)>1) return -1;
+    if(lft==-1 || rght==-1) return -1;
     return 1+max(lft,rght);
 }
     //Function to check whether a binary tree is balanced or not.
