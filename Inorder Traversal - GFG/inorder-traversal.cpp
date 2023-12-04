@@ -43,8 +43,7 @@ class Solution {
                 st.push(node);
                 node=node->left;
             }
-            else
-            {
+            else{
                 if(st.empty()) break;
                 node=st.top();
                 st.pop();
