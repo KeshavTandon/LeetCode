@@ -105,57 +105,60 @@ struct Node
 
 class Solution {
 public:
-bool isLeaf(Node*root)
+bool isLeaf(Node* root)
 {
-    if(root->left==NULL && root->right==NULL) return true;
-    else return false;
+    if(root->left==NULL && root->right==NULL)return true;
+    return false;
 }
-
-void LeftTraversal(Node* root,vector<int>&ans)
+void leftBoundary(Node* root,vector<int>&res)
 {
-    if(root==NULL || isLeaf(root)) return;
-    ans.push_back(root->data);
-    if(root->left!=NULL)
+    Node* curr=root->left;
+    while(curr)
     {
-     LeftTraversal(root->left,ans);
+        if(!isLeaf(curr)){
+            res.push_back(curr->data);
+        }
+        if(curr->left) curr=curr->left;
+        else
+        curr=curr->right;
     }
-    else
-    LeftTraversal(root->right,ans);
 }
-
-void RightTraversal(Node*root,vector<int>&ans)
+void leaves(Node* root,vector<int>&res)
 {
-    if(root==NULL || isLeaf(root)) return;
-    if(root->right!=NULL) RightTraversal(root->right,ans);
-    else
-    {
-        RightTraversal(root->left,ans);
-    }
-    ans.push_back(root->data);
-    
-}
-
-void LeavesTraversal(Node*root,vector<int>&ans)
-{
-    if(root==NULL) return;
     if(isLeaf(root)){
-        ans.push_back(root->data);
+        res.push_back(root->data);
         return;
     }
-    if(root->left!=NULL) LeavesTraversal(root->left,ans);
-    if(root->right!=NULL) LeavesTraversal(root->right,ans);
+    if(root->left) leaves(root->left,res);
+    if(root->right) leaves(root->right,res);
 }
-
+void rightBoundary(Node* root,vector<int>&res)
+{
+    vector<int>temp;
+    Node* curr=root->right;
+    while(curr){
+        if(!isLeaf(curr))
+        {
+            temp.push_back(curr->data);
+        }
+        if(curr->right) curr=curr->right;
+        else
+        curr=curr->left;
+    }
+    for(int i=temp.size()-1;i>=0;i--)
+    {
+        res.push_back(temp[i]);
+    }
+}
     vector <int> boundary(Node *root)
     {
-        vector<int>ans;
-        if(!root) return ans;
-        ans.push_back(root->data);
-        LeftTraversal(root->left,ans);
-        LeavesTraversal(root->left,ans);
-        LeavesTraversal(root->right,ans);
-        RightTraversal(root->right,ans);
-        return ans;
+        vector<int>res;
+        if(root==NULL) return res;
+        if(!isLeaf(root)) res.push_back(root->data);
+        leftBoundary(root,res);
+        leaves(root,res);
+        rightBoundary(root,res);
+        return res;
     }
 };
 
