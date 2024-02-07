@@ -2,10 +2,10 @@ class Solution {
 public:
     string frequencySort(string s) {
         vector<pair<char,int>>hash(123);
-        for(char &ch:s)
+        for(int i=0;i<s.size();i++)
         {
-            int freq=hash[ch].second;
-            hash[ch]={ch,freq+1};
+            int freq=hash[s[i]].second;
+            hash[s[i]]={s[i],freq+1};
         }
         auto lambda=[&](pair<char,int>&p1,pair<char,int>&p2)
         {
