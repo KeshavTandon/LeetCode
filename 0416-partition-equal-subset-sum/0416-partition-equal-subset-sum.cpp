@@ -1,25 +1,38 @@
 class Solution {
 public:
-    bool solve(int index,vector<int>&nums,int target,vector<vector<int>>&dp)
-    {
-        if(target==0) return true;
-        if(target<0) return false;
-        if(index>=nums.size()) return false;
-        if(dp[index][target]!=-1) return dp[index][target];
-        bool include=solve(index+1,nums,target-nums[index],dp);
-        bool exclude=solve(index+1,nums,target,dp);
-        return dp[index][target]=include || exclude;
-    }
     bool canPartition(vector<int>& nums) {
+        int sum=0;
+        for(int i=0;i<nums.size();i++) 
+            sum+=nums[i];
         int n=nums.size();
-        int tot_sum=0;
-        for(int i=0;i<nums.size();i++)
-            tot_sum+=nums[i];
-        int temp=tot_sum/2;
-        vector<vector<int>>dp(n,vector<int>(temp+1,-1));
-        if(tot_sum%2!=0)//odd
-            return false;
+        int fin_sum=sum/2;
+        vector<vector<bool>>dp(n+1,vector<bool>(fin_sum+1,false));
+        if(sum%2!=0) return false;
         else
-            return solve(0,nums,tot_sum/2,dp);
+        {
+            for(int i=0;i<n+1;i++){
+                for(int j=0;j<fin_sum+1;j++)
+                {
+                    if(i==0)
+                        dp[i][j]=false;
+                    if(j==0) 
+                        dp[i][j]=true;
+                }
+            }
+            
+            for(int i=1;i<n+1;i++)
+            {
+                for(int j=1;j<fin_sum+1;j++)
+                {
+                    if(nums[i-1]<=j)
+                    {
+                        dp[i][j]=dp[i-1][j-nums[i-1]] || dp[i-1][j];
+                    }
+                    else
+                        dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+           return dp[n][fin_sum]; 
     }
 };
