@@ -10,26 +10,25 @@
  */
 class Solution {
 public:
-    ListNode* reverse(ListNode* node)
+    ListNode* reverseList(ListNode* middleNode)
     {
-        //I will recieve one node and i will reverse from it
         ListNode* prev=NULL;
-        ListNode* nextNode=node;
-        while(node)
+        ListNode* nextNode=middleNode;
+        while(middleNode!=NULL)
         {
-            nextNode=node->next;
-            node->next=prev;
-            prev=node;
-            node=nextNode;
+            nextNode=middleNode->next;
+            middleNode->next=prev;
+            prev=middleNode;
+            middleNode=nextNode;
         }
         return prev;
-        
     }
+    
     bool isPalindrome(ListNode* head) {
-        if(!head || head->next==NULL) return true;
+        if(head->next==NULL) return true;
         ListNode* slow=head;
         ListNode* fast=head;
-        ListNode* prev=NULL;
+        ListNode* prev;
         while(fast!=NULL && fast->next!=NULL)
         {
             prev=slow;
@@ -37,7 +36,7 @@ public:
             fast=fast->next->next;
         }
         prev->next=NULL;
-        ListNode* temp=reverse(slow);
+        ListNode* temp=reverseList(slow);
         while(head!=NULL && temp!=NULL)
         {
             if(head->val!=temp->val)
@@ -46,6 +45,5 @@ public:
             temp=temp->next;
         }
         return true;
-        
     }
 };
