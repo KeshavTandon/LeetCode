@@ -1,28 +1,44 @@
 class Solution {
 public:
-    bool findNext(int i,int j,int count,vector<vector<char>>&board,string word){
-      if (word.length()==count){
-        return true;
-      }  
-      if (i<0|| i>=board.size() || j<0 || j>=board[0].size()||board[i][j]!=word[count]|| board[i][j] ==' '){
+    int l, m, n;
+    vector<vector<int>> directions{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    bool find(vector<vector<char>>& board, int i, int j, string &word, int idx) {
+        if(idx >= l)
+            return true;
+        
+        if(i < 0 || i >= m || j < 0 || j >= n || board[i][j] != word[idx])
+            return false;
+        
+        char temp = board[i][j];
+        board[i][j] = '$';
+        
+        for(auto& dir : directions) {
+            int i_ = i + dir[0];
+            int j_ = j + dir[1];
+            
+            if(find(board, i_, j_, word, idx+1))
+                return true;
+        }
+        
+        board[i][j] = temp;
         return false;
-      }
-      char temp=board[i][j];
-      board[i][j]=' ';
-      bool ans=findNext(i-1,j,count+1,board,word)||findNext(i+1,j,count+1,board,word)||findNext(i,j-1,count+1,board,word)||findNext(i,j+1,count+1,board,word);
-        board[i][j]=temp;
-        return ans;
     }
+    
     bool exist(vector<vector<char>>& board, string word) {
-        int row=board.size();
-        int col=board[0].size();
-        for(int i=0;i<row;i++){
-            for(int j=0;j<col;j++){
-                if(board[i][j]==word[0] && findNext(i,j,0,board,word)){
+        m = board.size();
+        n = board[0].size();
+        l = word.length();
+        if(m*n < l)
+            return false;
+        
+        for(int i = 0; i<m; i++) {
+            for(int j = 0; j<n; j++) {
+                if(board[i][j] == word[0] && find(board, i, j, word, 0)) {
                     return true;
                 }
             }
         }
+        
         return false;
     }
 };
