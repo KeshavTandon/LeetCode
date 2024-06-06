@@ -14,11 +14,11 @@ public:
             
             for(int i=0;i<groupSize;i++)
             {
-                if(mp[number+i]==0)
+                if(mp.find(number+i)==mp.end()) //not found in map
                     return false;
                 
                 mp[number+i]--;
-                if(mp[number+i]<1)
+                if(mp[number+i]==0)
                  mp.erase(number+i);
               
             }
