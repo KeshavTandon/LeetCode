@@ -1,24 +1,29 @@
-class Solution {
-public:
-    int solve(int row,int col,int m,int n,vector<vector<int>>&dp)
-    {
-        if(row==m-1 && col==n-1)
-            return 1;
-        int down=0,right=0;
-        if(dp[row][col]!=-1) return dp[row][col];
-        if(row==m-1)
-            right=solve(row,col+1,m,n,dp);
-        if(col==n-1)
-            down=solve(row+1,col,m,n,dp);
-        if(row>=0 && col>=0 && row<m && col<n)
+class Solution
+{
+    public:
+        int solve(int row, int col,vector<vector<int>>&dp)
         {
-            down=solve(row+1,col,m,n,dp);
-            right=solve(row,col+1,m,n,dp);
+            if (row == 0 && col == 0)
+            {
+                return 1;
+            }
+            if (row < 0 || col < 0)
+                return 0;
+            
+            if(dp[row][col]!=-1) return dp[row][col];
+
+            int up = 0, left = 0;
+
+            up = solve(row - 1, col,dp);
+            left = solve(row, col - 1,dp);
+
+            return dp[row][col]=up + left;
         }
-        return dp[row][col]=down+right;
-    }
-    int uniquePaths(int m, int n) {
-        vector<vector<int>>dp(m+1,vector<int>(n+1,-1));
-        return solve(0,0,m,n,dp);
+
+    int uniquePaths(int m, int n)
+    {
+       	//Either i can go to up or left
+        vector<vector<int>>dp(m,vector<int>(n,-1));
+        return solve(m - 1, n - 1,dp);
     }
 };
